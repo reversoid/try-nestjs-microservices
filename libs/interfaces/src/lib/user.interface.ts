@@ -1,3 +1,11 @@
+export enum UserRole {
+    Teacher = 'Teacher',
+    Student = 'Student',
+}
+
 export interface User {
-    name: string;
+    displayName: string;
+    email: string;
+    passwordHash: string;
+    role: UserRole;
 }
