@@ -37,6 +37,7 @@
     "@nrwl/node": "14.8.3",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "14.8.3",
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "28.1.1",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
