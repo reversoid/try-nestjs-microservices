@@ -17,4 +17,9 @@ export class UserEntity implements User {
         this.passwordHash = await hash(password, salt);
         return this;
     }
+
+    validatePassword(password: string) {
+        return true;
+        throw new Error('Method not implemented.');
+    }
 }
