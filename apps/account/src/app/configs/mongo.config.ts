@@ -12,12 +12,14 @@ export function getMongoConfig(): MongooseModuleAsyncOptions {
 }
 
 const getMongoString = (configService: ConfigService) => {
+    // TODO CREATE USERS FOR LOGIN AND PASSWORD AUTH
     const login = configService.get('MONGO_LOGIN');
     const password = configService.get('MONGO_PASSWORD');
+
     const host = configService.get('MONGO_HOST');
     const port = configService.get('MONGO_PORT');
     const database = configService.get('MONGO_DATABASE');
-    const auth = configService.get('MONGO_AUTHDATABASE');
-
-    return `mongodb://${login}:${password}@${host}:${port}/${database}?authSource=${auth}`;
+    const auth = configService.get('MONGO_AUTHDATABASE');    
+    
+    return `mongodb://${host}:${port}/${database}?authSource=${auth}`;
 }

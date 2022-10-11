@@ -6,6 +6,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from './configs/mongo.config';
 
 @Module({
-  imports: [MongooseModule.forRootAsync(getMongoConfig()), UserModule, AuthModule, ConfigModule.forRoot({isGlobal: true, envFilePath: 'envs/.account.env'})],
+  imports: [
+    MongooseModule.forRootAsync(getMongoConfig()),
+    UserModule,
+    AuthModule,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: 'envs/.account.dev.env' }),
+  ],
 })
 export class AppModule {}
