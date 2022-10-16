@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@school/contracts": ["libs/contracts/src/index.ts"],
       "@school/interfaces": ["libs/interfaces/src/index.ts"]
     }
   },
