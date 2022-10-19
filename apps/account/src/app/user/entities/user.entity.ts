@@ -1,4 +1,4 @@
-import { User, UserRole } from "@school/interfaces";
+import { User, UserCourses, UserRole } from "@school/interfaces";
 import { genSalt, hash } from 'bcrypt';
 
 export class UserEntity implements User {
@@ -7,6 +7,8 @@ export class UserEntity implements User {
     email: string;
     passwordHash: string;
     role: UserRole;
+    courses: UserCourses[];
+
     
     constructor(user: User) {
         Object.assign(this, user);
