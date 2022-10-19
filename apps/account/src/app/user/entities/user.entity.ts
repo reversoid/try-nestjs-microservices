@@ -1,5 +1,5 @@
 import { User, UserCourses, UserRole } from "@school/interfaces";
-import { genSalt, hash } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 
 export class UserEntity implements User {
     _id?: string;
@@ -20,8 +20,12 @@ export class UserEntity implements User {
         return this;
     }
 
-    validatePassword(password: string) {
-        return true;
-        throw new Error('Method not implemented.');
+    async validatePassword(password: string) {
+        return compare(password, this.passwordHash);
+    }
+
+    async updateProfile(displayName: string) {
+        this.displayName = displayName;
+        return this;
     }
 }
