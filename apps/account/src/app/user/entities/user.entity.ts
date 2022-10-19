@@ -20,6 +20,14 @@ export class UserEntity implements User {
         return this;
     }
 
+    public getUserProfile() {
+        return {
+            email: this.email,
+            role: this.role,
+            displayName: this.displayName,
+        }
+    }
+
     async validatePassword(password: string) {
         return compare(password, this.passwordHash);
     }

@@ -10,6 +10,6 @@ export namespace AccountUserInfo {
   }
 
   export class Response {
-    user: Omit<User, 'passwordHash'>;
+    profile: Omit<User, 'passwordHash'>;
   }
 }

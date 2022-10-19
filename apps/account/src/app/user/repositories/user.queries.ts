@@ -1,6 +1,7 @@
 import { Body, Controller } from '@nestjs/common';
 import { AccountUserCourses, AccountUserInfo } from '@school/contracts';
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
+import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from './user.repository';
 
 @Controller()
@@ -13,13 +14,11 @@ export class UserQueries {
     @Body() { id }: AccountUserInfo.Request
   ): Promise<AccountUserInfo.Response> {
     const user = await this.userRepository.findUserById(id);
-
-    // TODO PROBABLY PASSWORD HASH IS RETURNED, FIX THIS BY GOOD WAY
-    delete user.passwordHash;
+    const profile = new UserEntity(user).getUserProfile();
 
     return {
-      user,
-    };
+      profile,
+    }
   }
 
   @RMQValidate()
