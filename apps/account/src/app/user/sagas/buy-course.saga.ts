@@ -2,6 +2,7 @@ import { PurchaseState } from '@school/interfaces';
 import { RMQService } from 'nestjs-rmq';
 import { UserEntity } from '../entities/user.entity';
 import { BuyCourseSagaState } from './buy-course.state';
+import { BuyCourseSagaStateStarted } from './buy-course.steps';
 
 export class BuyCourseSaga {
   private state: BuyCourseSagaState;
@@ -19,6 +20,7 @@ export class BuyCourseSaga {
   setState(state: PurchaseState, courseId: string) {
     switch (state) {
       case PurchaseState.Started:
+        this.state = new BuyCourseSagaStateStarted();
         break;
       case PurchaseState.WatingForPayment:
         break;
@@ -29,6 +31,6 @@ export class BuyCourseSaga {
     }
     this.state.setContext(this);
 
-    this.user.updateCourseStatus(courseId, state);
+    this.user.setCourseStatus(courseId, state);
   }
 }

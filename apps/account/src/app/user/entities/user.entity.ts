@@ -36,7 +36,27 @@ export class UserEntity implements User {
     return this;
   }
 
-  public addCourse(courseId: string) {
+  public setCourseStatus(courseId: string, state: PurchaseState) {
+    const exist = this.courses.find((course) => course.courseId === courseId);
+
+    if (!exist) {
+      this._addCourse(courseId, state);
+      return this;
+    }
+
+    if (state === PurchaseState.Canceled) {
+      this._deleteCourse(courseId);
+      return this;
+    }
+
+    const courseToUpdate = this.courses.find((c) => c.courseId === courseId);
+    if (!courseToUpdate) {
+      throw new Error('Данный курс не связан с пользователем');
+    }
+    courseToUpdate.purchaseState = state;
+  }
+
+  private _addCourse(courseId: string, state: PurchaseState) {
     const exist = this.courses.find((course) => course.courseId === courseId);
 
     if (exist) {
@@ -45,19 +65,11 @@ export class UserEntity implements User {
 
     this.courses.push({
       courseId,
-      purchaseState: PurchaseState.Started,
+      purchaseState: state,
     });
   }
 
-  public deleteCourse(courseId: string) {
+  private _deleteCourse(courseId: string) {
     this.courses = this.courses.filter((c) => c.courseId === courseId);
-  }
-
-  public updateCourseStatus(courseId: string, state: PurchaseState) {
-    const courseToUpdate = this.courses.find((c) => c.courseId === courseId);
-    if (!courseToUpdate) {
-      throw new Error('Данный курс не связан с пользователем');
-    }
-    courseToUpdate.purchaseState = state;
   }
 }
