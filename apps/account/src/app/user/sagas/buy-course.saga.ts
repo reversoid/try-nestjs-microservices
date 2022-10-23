@@ -7,9 +7,9 @@ export class BuyCourseSaga {
   private state: BuyCourseSagaState;
 
   constructor(
-    private user: UserEntity,
-    private courseId: string,
-    private rmqService: RMQService
+    public user: UserEntity,
+    public courseId: string,
+    public rmqService: RMQService
   ) {}
 
   getState() {

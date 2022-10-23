@@ -11,10 +11,10 @@ export namespace PaymentGenerateLink {
     userId: string;
 
     @IsNumber()
-    sum: string;
+    sum: number;
   }
 
   export class Response {
-    link: string;
+    paymentLink: string;
   }
 }
