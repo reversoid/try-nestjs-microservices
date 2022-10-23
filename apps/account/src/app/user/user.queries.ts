@@ -1,8 +1,8 @@
 import { Body, Controller } from '@nestjs/common';
 import { AccountUserCourses, AccountUserInfo } from '@school/contracts';
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
-import { UserEntity } from '../entities/user.entity';
-import { UserRepository } from './user.repository';
+import { UserEntity } from './entities/user.entity';
+import { UserRepository } from './repositories/user.repository';
 
 @Controller()
 export class UserQueries {
@@ -18,7 +18,7 @@ export class UserQueries {
 
     return {
       profile,
-    }
+    };
   }
 
   @RMQValidate()
