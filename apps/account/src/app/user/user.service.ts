@@ -44,6 +44,23 @@ export class UserService {
     return { status };
   }
 
+  public async getUserInfo(id: string) {
+    const user = await this.userRepository.findUserById(id);
+    const profile = new UserEntity(user).getUserProfile();
+
+    return {
+      profile,
+    };
+  }
+
+  async getUserCourses(id: string) {
+    const user = await this.userRepository.findUserById(id);
+
+    return {
+      courses: user.courses,
+    };
+  }
+
   private async _getUserEntity(userId: string) {
     const existingUser = await this.userRepository.findUserById(userId);
     if (!existingUser) {
