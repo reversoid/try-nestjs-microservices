@@ -2,7 +2,6 @@ import { Body, Controller } from '@nestjs/common';
 import {
   AccountBuyCourse,
   AccountChangeProfile,
-  AccountCheckPayment,
 } from '@school/contracts';
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
 import { UserService } from './user.service';
@@ -25,14 +24,5 @@ export class UserCommands {
     @Body() { courseId, userId }: AccountBuyCourse.Request
   ): Promise<AccountBuyCourse.Response> {
     return this.userService.buyCourse(courseId, userId);
-  }
-
-  // TODO maybe better to place it in queries not commands
-  @RMQValidate()
-  @RMQRoute(AccountCheckPayment.topic)
-  async checkPayment(
-    @Body() { courseId, userId }: AccountCheckPayment.Request
-  ): Promise<AccountCheckPayment.Response> {
-    return this.userService.checkPayment(courseId, userId);
   }
 }

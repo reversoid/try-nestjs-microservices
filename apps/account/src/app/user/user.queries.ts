@@ -1,12 +1,13 @@
 import { Body, Controller } from '@nestjs/common';
-import { AccountUserCourses, AccountUserInfo } from '@school/contracts';
+import { AccountCheckPayment, AccountUserCourses, AccountUserInfo } from '@school/contracts';
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
 import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
-
+import { UserService } from './user.service';
+// TODO PLACE LOGIC INTO CONTROLLER
 @Controller()
 export class UserQueries {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository, private readonly userService: UserService) {}
 
   @RMQValidate()
   @RMQRoute(AccountUserInfo.topic)
@@ -31,5 +32,13 @@ export class UserQueries {
     return {
       courses: user.courses,
     };
+  }
+
+  @RMQValidate()
+  @RMQRoute(AccountCheckPayment.topic)
+  async checkPayment(
+    @Body() { courseId, userId }: AccountCheckPayment.Request
+  ): Promise<AccountCheckPayment.Response> {
+    return this.userService.checkPayment(courseId, userId);
   }
 }
