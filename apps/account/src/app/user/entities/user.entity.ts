@@ -1,4 +1,11 @@
-import { PurchaseState, User, UserCourses, UserRole } from '@school/interfaces';
+import { AccountChangedCourse } from '@school/contracts';
+import {
+  DomainEvent,
+  PurchaseState,
+  User,
+  UserCourses,
+  UserRole,
+} from '@school/interfaces';
 import { compare, genSalt, hash } from 'bcrypt';
 
 export class UserEntity implements User {
@@ -8,9 +15,15 @@ export class UserEntity implements User {
   passwordHash: string;
   role: UserRole;
   courses: UserCourses[];
+  events: DomainEvent[] = [];
 
   constructor(user: User) {
-    Object.assign(this, user);
+    this._id = user._id;
+    this.displayName = user.displayName;
+    this.email = user.displayName;
+    this.passwordHash = user.passwordHash;
+    this.role = user.role;
+    this.courses = user.courses ?? [];
   }
 
   public async setPassword(password: string) {
@@ -54,6 +67,16 @@ export class UserEntity implements User {
       throw new Error('Данный курс не связан с пользователем');
     }
     courseToUpdate.purchaseState = state;
+
+    this.events.push({
+      topic: AccountChangedCourse.topic,
+      data: {
+        courseId,
+        userId: this._id,
+        state,
+      },
+    });
+    return this;
   }
 
   private _addCourse(courseId: string, state: PurchaseState) {
