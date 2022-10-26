@@ -9,6 +9,16 @@ import {
   BuyCourseSagaStateStarted,
 } from './buy-course.steps';
 
+const PURCHASE_STATE_TO_NEW_MATCHING_SAGA_STATE: Record<
+  PurchaseState,
+  BuyCourseSagaState
+> = {
+  Started: (() => new BuyCourseSagaStateStarted())(),
+  WaitingForPayment: (() => new BuyCourseSagaStateWaitingForPayment())(),
+  Purchased: (() => new BuyCourseSagaStatePurchased())(),
+  Canceled: (() => new BuyCourseSagaStateCanceled())(),
+};
+
 export class BuyCourseSaga {
   private state: BuyCourseSagaState;
 
@@ -23,20 +33,8 @@ export class BuyCourseSaga {
   }
 
   setState(state: PurchaseState, courseId: string) {
-    switch (state) {
-      case PurchaseState.Started:
-        this.state = new BuyCourseSagaStateStarted();
-        break;
-      case PurchaseState.WatingForPayment:
-        this.state = new BuyCourseSagaStateWaitingForPayment();
-        break;
-      case PurchaseState.Canceled:
-        this.state = new BuyCourseSagaStateCanceled();
-        break;
-      case PurchaseState.Purchased:
-        this.state = new BuyCourseSagaStatePurchased();
-        break;
-    }
+    this.state = PURCHASE_STATE_TO_NEW_MATCHING_SAGA_STATE[state];
+
     this.state.setContext(this);
 
     this.user.setCourseStatus(courseId, state);
