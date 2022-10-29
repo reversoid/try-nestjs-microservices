@@ -21,5 +21,5 @@ const getMongoString = (configService: ConfigService) => {
     const database = configService.get('MONGO_DATABASE');
     const auth = configService.get('MONGO_AUTHDATABASE');    
     
-    return `mongodb://${host}:${port}/${database}?authSource=${auth}`;
+    return `mongodb://${login}:${password}@${host}:${port}/${database}?authSource=${auth}`;
 }

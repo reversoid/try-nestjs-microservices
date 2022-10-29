@@ -20,7 +20,6 @@ export interface User {
 }
 
 export interface UserCourses {
-    _id?: string;
     courseId: string;
     purchaseState: PurchaseState;
 }

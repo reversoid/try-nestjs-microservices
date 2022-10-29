@@ -9,7 +9,7 @@ import { UserRepository } from '../user/repositories/user.repository';
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   async register({ email, password, displayName }: AccountRegister.Request) {
@@ -46,7 +46,7 @@ export class AuthService {
 
   async login(id: string) {
     return {
-        access_token: await this.jwtService.signAsync({id}),
+      access_token: await this.jwtService.signAsync({ id }),
     };
   }
 }

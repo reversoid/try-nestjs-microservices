@@ -20,7 +20,7 @@ export class UserEntity implements User {
   constructor(user: User) {
     this._id = user._id;
     this.displayName = user.displayName;
-    this.email = user.displayName;
+    this.email = user.email;
     this.passwordHash = user.passwordHash;
     this.role = user.role;
     this.courses = user.courses ?? [];
