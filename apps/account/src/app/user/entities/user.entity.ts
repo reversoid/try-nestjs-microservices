@@ -79,6 +79,13 @@ export class UserEntity implements User {
     return this;
   }
 
+  public getCourseState(courseId: string): PurchaseState {
+    return (
+      this.courses.find((c) => c.courseId === courseId)?.purchaseState ??
+      PurchaseState.Started
+    );
+  }
+
   private _addCourse(courseId: string, state: PurchaseState) {
     const exist = this.courses.find((course) => course.courseId === courseId);
 

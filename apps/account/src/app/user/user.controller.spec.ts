@@ -8,15 +8,18 @@ import { RMQModule, RMQService, RMQTestService } from 'nestjs-rmq';
 import { INestApplication } from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
 import {
+  AccountBuyCourse,
   AccountLogin,
   AccountRegister,
   AccountUserInfo,
+  CourseGetInfo,
+  PaymentGenerateLink,
 } from '@school/contracts';
 import { verify } from 'jsonwebtoken';
 import { UserRole } from '@school/interfaces';
 
 const authLogin: AccountLogin.Request = {
-  email: 'a@a.ru',
+  email: 'b@b.ru',
   password: '1',
 };
 
@@ -24,6 +27,8 @@ const authRegister: AccountRegister.Request = {
   ...authLogin,
   displayName: 'George',
 };
+
+const courseId = 'courseId';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -79,6 +84,41 @@ describe('UserController', () => {
       email: authRegister.email,
       role: UserRole.Student,
     });
+  });
+
+  it('BuyCourse', async () => {
+    const paymentLink = 'paymentLink';
+    rmqService.mockReply<CourseGetInfo.Response>(CourseGetInfo.topic, {
+      course: {
+        _id: courseId,
+        price: 1000,
+      },
+    });
+
+    rmqService.mockReply<PaymentGenerateLink.Response>(
+      PaymentGenerateLink.topic,
+      {
+        paymentLink,
+      }
+    );
+    const response = await rmqService.triggerRoute<
+      AccountBuyCourse.Request,
+      AccountBuyCourse.Response
+    >(AccountBuyCourse.topic, {
+      courseId,
+      userId,
+    });
+    expect(response.paymentLink).toEqual(paymentLink);
+
+    await expect(
+      rmqService.triggerRoute<
+        AccountBuyCourse.Request,
+        AccountBuyCourse.Response
+      >(AccountBuyCourse.topic, {
+        courseId,
+        userId,
+      })
+    ).rejects.toThrowError();
   });
 
   afterAll(async () => {

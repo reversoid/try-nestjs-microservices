@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@school/interfaces';
+import { PurchaseState, User } from '@school/interfaces';
 import { RMQService } from 'nestjs-rmq';
 import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
