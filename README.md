@@ -2,7 +2,7 @@
 
 # School
 
-This is my first microservice app that I created during the 1-month course.
+This is my first microservice app for online-school that I created during the 1-month [course](https://stepik.org/course/117212/promo)
 
 Stack: NestJs, RabbitMQ, MongoDB.
 
