@@ -10,6 +10,6 @@ export namespace AccountUserInfo {
   }
 
   export class Response {
-    profile: Omit<User, 'passwordHash'>;
+    profile: Pick<User, 'email' | 'role' | 'displayName'>;
   }
 }
