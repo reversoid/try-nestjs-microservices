@@ -9,10 +9,12 @@ import { INestApplication } from '@nestjs/common';
 import { UserRepository } from './repositories/user.repository';
 import {
   AccountBuyCourse,
+  AccountCheckPayment,
   AccountLogin,
   AccountRegister,
   AccountUserInfo,
   CourseGetInfo,
+  PaymentCheck,
   PaymentGenerateLink,
 } from '@school/contracts';
 import { verify } from 'jsonwebtoken';
@@ -119,6 +121,21 @@ describe('UserController', () => {
         userId,
       })
     ).rejects.toThrowError();
+  });
+
+  it('CheckPayment', async () => {
+    rmqService.mockReply<PaymentCheck.Response>(PaymentCheck.topic, {
+      status: 'success',
+    });
+
+    const response = await rmqService.triggerRoute<
+      AccountCheckPayment.Request,
+      AccountCheckPayment.Response
+    >(AccountCheckPayment.topic, {
+      courseId,
+      userId,
+    });
+    expect(response.status).toEqual('success');
   });
 
   afterAll(async () => {
